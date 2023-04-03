@@ -24,21 +24,11 @@ function readFileAndConvert(fileName) {
 }
 
 function isImage(urlOrImage) {
-    if (validTypeImage(urlOrImage)) {
-        return Promise.resolve(readFileAndConvert(urlOrImage));
-    } else {
-        return Promise.reject('[*] An error occured: Invalid image [validTypeImage === false]');
-    }
+    return validTypeImage(urlOrImage) ? Promise.resolve(readFileAndConvert(urlOrImage)) : Promise.reject('[*] An error occured: Invalid image [validTypeImage === false]');
 }
 
 function imageToBase64(urlOrImage) {
-    if (validUrl(urlOrImage)) {
-        return fetch(urlOrImage).then(function (response) {
-            return response.buffer();
-        }).then(base64ToNode);
-    } else {
-        return isImage(urlOrImage);
-    }
+    return validUrl(urlOrImage) ? fetch(urlOrImage).then(function (response) { return response.buffer(); }).then(base64ToNode) : isImage(urlOrImage);
 }
 
 module.exports = imageToBase64;
